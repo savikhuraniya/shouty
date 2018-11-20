@@ -6,39 +6,71 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
+
 import java.util.HashMap;
 import java.util.Map;
+
+import org.junit.Assert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 
+
+
+
+
+
 public class Stepdefs {
+	
+	WebDriver driver;
+       public Stepdefs(SharedDriver driver)
+       {super();
+       this.driver=driver();
+       }
 
-    private Person sean;
-    private Person lucy;
-    private String messageFromSean;
-    private Network network;
-    private Map<String,Person> people;
+	
+	
+	@Given("^The URL of Demo Webshop$")
+	public void the_URL_of_Demo_Webshop() throws Throwable {
+		//driver=ChromeDriver();
+		driver.get("http://demowebshop.tricentis.com")
+		;
+	
+	}
 
-    @Before
-    public void createNetwork() {
-        network = new Network();
-        people = new HashMap<String, Person>();
-    }
+	@When("^User enters (.*) to username$")
+	public void user_enters_savik__hotmail_com_to_username(String username) throws Throwable {
+	 
+	
+		driver.findElement(By.id("Email")).sendKeys(username);
+		
+		
+	}
 
-    @Given("^a person named (\\w+)$")
-    public void a_person_named(String name) throws Throwable {
-        people.put(name, new Person(network));
-    }
+	@When("^User enters (.*) as password$")
+	public void user_enters_hello_as_password(String password) throws Throwable {
+		driver.findElement(By.id("Password")).sendKeys(password);
+	}
 
-    @When("^Sean shouts \"(.*?)\"$")
-    public void sean_shouts(String message) throws Throwable {
-        people.get("Sean").shout(message);
-        messageFromSean = message;
-    }
+	@When("^User clicks on login button$")
+	public void user_clicks_on_login_button() throws Throwable {
+		driver.findElement(By.cssSelector("input[value=Log in']")).click();
+	}
 
-    @Then("^Lucy hears Sean's message$")
-    public void lucy_hears_Sean_s_message() throws Throwable {
-        assertEquals(asList(messageFromSean), people.get("Lucy").getMessagesHeard());
-    }
+	@Then("^User (is|is not) valid$")
+	public void user_is_valid() throws Throwable {
+		
+		if(message.Equals("is not"))
+		{
+	    Assert.assertEquals("demo web shop.", driver.getTitle());
+		}
+		else
+		{Assert.assertEquals("demo web shop", driver.getTitle());} //striked off means the function is just depricated but it will run
+		
+	}
+
+
 }
